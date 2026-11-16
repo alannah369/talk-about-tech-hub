@@ -30,13 +30,13 @@
       :root:not([data-theme="light"]) {
         --bg: #14171c; --surface: #1c2027; --surface-2: #232832; --text: #e7e9ee;
         --muted: #a0a8b5; --border: #2e3440; --accent: #8bb4dd; --accent-soft: #24334a;
-        --s-none: #2b303a; --shadow: none;
+        --s-none: #2b303a; --shadow: none; color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
       --bg: #14171c; --surface: #1c2027; --surface-2: #232832; --text: #e7e9ee;
       --muted: #a0a8b5; --border: #2e3440; --accent: #8bb4dd; --accent-soft: #24334a;
-      --s-none: #2b303a; --shadow: none;
+      --s-none: #2b303a; --shadow: none; color-scheme: dark;
     }
 
     * { box-sizing: border-box; }
@@ -53,7 +53,7 @@
 
     /* Header & nav */
     header.top {
-      position: sticky; top: 0; z-index: 10;
+      position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
@@ -587,8 +587,11 @@
           ...t.replies.map(r => el("div", { class: "reply" }, el("div", { class: "meta", text: `${r.author} · ${timeAgo(r.created)}` }), el("div", { class: "body", text: r.body }))),
           el("div", { style: "display:flex;gap:14px" },
             el("button", { class: "link", type: "button", text: "Reply", onclick: () => { replyForm.style.display = replyForm.style.display === "none" ? "grid" : "none"; } }),
-            el("button", { class: "link", type: "button", text: "Report", onclick: () => {
-              if (confirm("Report this post as harmful? It will be hidden.")) { t.hidden = true; saveThreads(); renderThreads(); }
+            el("button", { class: "link", type: "button", text: "Report", onclick: (e) => {
+              // Two clicks: the first asks to confirm, the second hides the post.
+              const btn = e.currentTarget;
+              if (btn.dataset.armed) { t.hidden = true; saveThreads(); renderThreads(); }
+              else { btn.dataset.armed = "1"; btn.textContent = "Click again to hide this post"; }
             } })),
           replyForm
         );

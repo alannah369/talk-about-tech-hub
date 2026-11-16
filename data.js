@@ -97,7 +97,7 @@ const LEGISLATION = [
     topic: "AI chatbots",
     status: "In effect",
     date: "2026-01-01",
-    summary: "Requires AI companion chatbots to tell users they are AI, refer users who mention self-harm to crisis services, and add protections for known minors such as break reminders and limits on sexual content. Amended in 2026 by SB 1119, which changes some of the minor-specific rules.",
+    summary: "Requires AI companion chatbots to tell users they are AI, refer users who mention self-harm to crisis services, and add protections for known minors such as break reminders and limits on sexual content. Lets people harmed by violations sue. No court challenge to the law itself had been confirmed as of November 2026, though legal analysts expect one. Lawmakers are also working to amend it (SB 1119), which would change some of the minor-specific rules.",
     source: "https://fpf.org/blog/understanding-the-new-wave-of-chatbot-legislation-california-sb-243-and-beyond/",
     sourceName: "Future of Privacy Forum"
   },
@@ -106,10 +106,20 @@ const LEGISLATION = [
     state: "CA",
     topic: "Social media",
     status: "In litigation",
-    date: "2025-01-01",
-    summary: "Limits 'addictive feeds' and overnight notifications for minors without parental consent. Challenged in court by the tech industry group NetChoice; parts have been blocked.",
-    source: "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202320240SB976",
-    sourceName: "California Legislature"
+    date: "2025-11-06",
+    summary: "Limits 'addictive feeds' and overnight notifications for minors without parental consent. The tech industry group NetChoice sued to block it (NetChoice v. Bonta). In September 2025, the Ninth Circuit appeals court ruled 3–0 that the main 'addictive feeds' rule should not be blocked, while changing the lower court's ruling on some other parts. In November 2025 it refused to rehear the case. The lawsuit is still going.",
+    source: "https://netchoice.org/netchoice-v-bonta-california-2024/",
+    sourceName: "NetChoice case page"
+  },
+  {
+    name: "California Age-Appropriate Design Code Act (AB 2273)",
+    state: "CA",
+    topic: "Privacy",
+    status: "Partly blocked",
+    date: "2026-03-12",
+    summary: "Requires online services likely to be used by kids to turn on high-privacy settings by default and limit collecting kids' data. NetChoice sued to block it (a separate NetChoice v. Bonta case). In March 2026, the Ninth Circuit lifted most of the court order blocking the law. It kept the block only on the requirement for companies to file 'Data Protection Impact Assessments' and sent the rest of the challenge back to the lower court.",
+    source: "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/03/12/25-2366.pdf",
+    sourceName: "Ninth Circuit opinion"
   },
   {
     name: "AI companion law",
