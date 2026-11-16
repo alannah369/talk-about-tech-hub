@@ -72,6 +72,18 @@ const LITIGATION = [
     sourceName: "TechCrunch"
   },
   {
+    name: "State attorneys general v. Meta (multistate settlement)",
+    court: "Federal court, N.D. California (with related state cases)",
+    parties: "California and about 50 other attorneys general v. Meta",
+    topic: "Social media",
+    platforms: ["meta", "instagram"],
+    status: "Settled",
+    date: "2026-08-26",
+    summary: "Filed in 2023, claiming Meta knowingly designed Instagram and Facebook to hook kids and hid the harm. Meta settled in August 2026 during trial, for about $17 billion as widely reported (Meta's own filing says up to about $18.6 billion), paid to states over 10 years. Meta must also limit features like beauty filters and visible like counts, with an independent monitor for 5 years. Florida and New Mexico did not join. The settlement still needs a judge's approval.",
+    source: "https://www.pbs.org/newshour/nation/meta-reaches-17-billion-settlement-with-states-in-landmark-trial-over-teen-social-media-addiction",
+    sourceName: "PBS NewsHour / AP"
+  },
+  {
     name: "New Mexico v. Meta",
     court: "New Mexico state court",
     parties: "State of New Mexico v. Meta",
