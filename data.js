@@ -284,6 +284,64 @@ const ORGANIZATIONS = [
     url: "https://socialmediavictims.org" }
 ];
 
+// ---------- PLATFORMS ----------
+// match: words to look for in lawsuits and laws, so related items show up automatically.
+// topic: also show lawsuits and laws with this topic (optional).
+const PLATFORMS = [
+  { id: "meta", name: "Meta", includes: "Facebook, Messenger, WhatsApp, Meta AI",
+    minAge: "13+",
+    about: "Meta owns Facebook, Instagram, Messenger and WhatsApp, and puts its Meta AI assistant inside all of them.",
+    concerns: ["Design features that keep teens scrolling", "Contact from strangers in messages", "Harmful content in feeds", "Meta AI chatbot conversations with teens"],
+    tools: [{ name: "Meta Family Center (parent supervision tools)", url: "https://familycenter.meta.com" }],
+    match: ["Meta"] },
+  { id: "instagram", name: "Instagram", includes: "Owned by Meta",
+    minAge: "13+",
+    about: "Photo, video and Reels app. Since 2024, users under 18 are placed in 'Teen Accounts' with stricter default settings.",
+    concerns: ["Body image and comparison", "Endless Reels feed", "Direct messages from strangers", "Sextortion scams"],
+    tools: [{ name: "Instagram Parents' Guide", url: "https://about.instagram.com/community/parents" },
+            { name: "Meta Family Center", url: "https://familycenter.meta.com" }],
+    match: ["Meta", "Instagram"] },
+  { id: "google", name: "Google & YouTube", includes: "YouTube, YouTube Kids, Gemini",
+    minAge: "13+ for their own account. Younger kids can use supervised accounts and YouTube Kids.",
+    about: "YouTube is the most-used platform among U.S. teens. Google also offers the Gemini AI assistant.",
+    concerns: ["Autoplay and Shorts keeping kids watching", "Inappropriate videos slipping through", "Comments from strangers"],
+    tools: [{ name: "Google Family Link", url: "https://families.google/familylink/" },
+            { name: "YouTube for families (supervised accounts, YouTube Kids)", url: "https://www.youtube.com/myfamily" }],
+    match: ["Google", "YouTube"] },
+  { id: "snapchat", name: "Snapchat", includes: "Owned by Snap Inc.",
+    minAge: "13+",
+    about: "Messaging app built around photos and videos that disappear after viewing.",
+    concerns: ["Disappearing messages that are hard to monitor", "Location sharing on Snap Map", "Contact from strangers, including drug sellers and scammers", "Streaks that pressure daily use"],
+    tools: [{ name: "Snapchat Family Center and parent guide", url: "https://parents.snapchat.com" }],
+    match: ["Snap"] },
+  { id: "tiktok", name: "TikTok", includes: "Owned by ByteDance in most countries",
+    minAge: "13+. Under-13s in the U.S. get a limited version.",
+    about: "Short-video app driven by a powerful recommendation algorithm. Teen accounts get a default 60-minute daily screen time limit.",
+    concerns: ["A highly personalized feed that's hard to put down", "Dangerous 'challenges'", "Harmful content about dieting or self-harm"],
+    tools: [{ name: "TikTok Guardian's Guide and Family Pairing", url: "https://www.tiktok.com/safety/en/guardians-guide" }],
+    match: ["TikTok", "ByteDance"] },
+  { id: "discord", name: "Discord", includes: "Chat servers, voice and video",
+    minAge: "13+",
+    about: "Chat app organized into 'servers', popular with gamers. Many servers are private and run by users.",
+    concerns: ["Private servers that are hard for parents to see", "Contact from strangers", "Explicit content in some servers"],
+    tools: [{ name: "Discord Safety Center and Family Center", url: "https://discord.com/safety" }],
+    match: ["Discord"] },
+  { id: "roblox", name: "Roblox", includes: "Games made by users",
+    minAge: "No minimum age. Younger players get more restricted settings by default.",
+    about: "A platform of millions of games ('experiences') made by users, very popular with children under 13.",
+    concerns: ["Strangers contacting children through chat", "Spending real money on Robux", "User-made games with inappropriate content"],
+    tools: [{ name: "Roblox guide for parents", url: "https://corp.roblox.com/parents" },
+            { name: "Roblox safety", url: "https://corp.roblox.com/safety" }],
+    match: ["Roblox"] },
+  { id: "ai", name: "AI chatbots", includes: "ChatGPT, Character.AI, Gemini, Meta AI, Snapchat My AI and others",
+    minAge: "Varies. ChatGPT is 13+ with a parent's permission under 18. Character.AI ended open-ended chats for users under 18 in late 2025.",
+    about: "General assistants and 'companion' chatbots that can act like a friend or partner. Several lawsuits claim chatbots encouraged teens toward self-harm.",
+    concerns: ["Emotional dependence on a chatbot 'friend'", "Unsafe responses about self-harm", "Sexual role-play with minors", "Kids sharing private information"],
+    tools: [{ name: "ChatGPT parental controls", url: "https://openai.com/index/introducing-parental-controls/" },
+            { name: "Character.AI safety", url: "https://character.ai/safety" }],
+    match: ["Character.AI", "OpenAI", "chatbot"], topic: "AI chatbots" }
+];
+
 // ---------- RESOURCES ----------
 const RESOURCES = [
   { title: "988 Suicide & Crisis Lifeline", type: "Get help now",

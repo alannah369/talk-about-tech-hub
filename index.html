@@ -58,7 +58,7 @@
       border-bottom: 1px solid var(--border);
     }
     header.top .wrap { display: flex; align-items: center; gap: 16px; min-height: 58px; flex-wrap: wrap; }
-    .brand { font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--text); white-space: nowrap; }
+    .brand { font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--text); min-width: 0; }
     .brand span { color: var(--accent); }
     nav.tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
     nav.tabs a {
@@ -85,10 +85,12 @@
       font: inherit; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px;
       background: var(--surface); color: var(--text);
     }
-    .toolbar input { flex: 1; min-width: 200px; }
+    .toolbar input { flex: 1; min-width: min(200px, 100%); }
+    .toolbar select { max-width: 100%; }
+    .map-layout > *, .forum-layout > * { min-width: 0; }
 
     /* Cards */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 12px; }
     .card {
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
       padding: 16px; box-shadow: var(--shadow);
@@ -104,6 +106,26 @@
     .status { font-size: 0.76rem; padding: 2px 8px; border-radius: 999px; color: #fff; font-weight: 600; }
     .source { font-size: 0.84rem; }
     .empty { color: var(--muted); padding: 12px 0; }
+
+    /* Platforms */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .chips button {
+      font: inherit; font-size: 0.92rem; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    }
+    .chips button:hover { border-color: var(--accent); }
+    .chips button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+    .platform { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .platform > div { min-width: 0; }
+    .platform h3 { font-size: 1.3rem; margin: 0; }
+    .platform h4 { margin: 14px 0 6px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .platform ul { margin: 0; padding-left: 18px; }
+    .platform li { margin: 3px 0; }
+    .age { display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 8px; background: var(--accent-soft); font-size: 0.9rem; }
+    .related { display: grid; gap: 8px; }
+    .related .card { padding: 12px; box-shadow: none; }
+    .related .card h3 { font-size: 0.95rem; }
+    @media (max-width: 820px) { .platform { grid-template-columns: 1fr; } }
 
     /* Latest list */
     .latest { list-style: none; padding: 0; margin: 0; }
@@ -171,6 +193,7 @@
       <a class="brand" href="#top">Talk About Tech <span>Resource Hub</span></a>
       <nav class="tabs" aria-label="Sections">
         <a href="#latest">Latest</a>
+        <a href="#platforms">Platforms</a>
         <a href="#litigation">Litigation</a>
         <a href="#legislation">Legislation</a>
         <a href="#map-section">Map</a>
@@ -192,6 +215,13 @@
       <h2>Latest updates</h2>
       <p class="section-intro">The most recent developments in lawsuits and laws, newest first.</p>
       <ul class="latest" id="latest-list"></ul>
+    </section>
+
+    <section id="platforms">
+      <h2>Platforms</h2>
+      <p class="section-intro">Pick an app to see its age rules, common concerns, parent tools, and related lawsuits and laws.</p>
+      <div class="chips" id="platform-chips" role="tablist" aria-label="Platforms"></div>
+      <div id="platform-detail"></div>
     </section>
 
     <section id="litigation">
@@ -352,6 +382,46 @@
         )
       ));
     })();
+
+    // ---------- Platforms ----------
+    function relatedTo(p) {
+      const words = p.match.map(w => new RegExp("\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i"));
+      const hit = (x) => (p.topic && x.topic === p.topic) || words.some(re => re.test(x.name + " " + (x.parties || "") + " " + x.summary));
+      return [
+        ...LITIGATION.filter(hit).map(x => ({ ...x, kind: "Lawsuit", where: x.court })),
+        ...LEGISLATION.filter(hit).map(x => ({ ...x, kind: "Law", where: STATES[x.state] }))
+      ].sort((a, b) => b.date.localeCompare(a.date));
+    }
+    function showPlatform(id) {
+      const p = PLATFORMS.find(x => x.id === id) || PLATFORMS[0];
+      document.querySelectorAll("#platform-chips button").forEach(b => b.setAttribute("aria-selected", b.dataset.id === p.id));
+      const related = relatedTo(p);
+      $("platform-detail").replaceChildren(el("div", { class: "card platform" },
+        el("div", {},
+          el("h3", { text: p.name }),
+          el("div", { class: "meta", text: p.includes }),
+          el("div", { class: "age" }, el("strong", { text: "Minimum age: " }), p.minAge),
+          el("p", { text: p.about }),
+          el("h4", { text: "Common concerns" }),
+          el("ul", {}, ...p.concerns.map(c => el("li", { text: c }))),
+          el("h4", { text: "Parent tools and safety info" }),
+          el("ul", {}, ...p.tools.map(t => el("li", {}, link(t.url, t.name))))
+        ),
+        el("div", {},
+          el("h4", { style: "margin-top:0", text: "Related lawsuits and laws" }),
+          related.length
+            ? el("div", { class: "related" }, ...related.map(x => el("div", { class: "card" },
+                el("h3", { text: x.name }),
+                el("div", { class: "tags" }, statusPill(x.status), el("span", { class: "tag", text: x.kind })),
+                el("div", { class: "meta", text: x.where + " · Updated " + fmtDate(x.date) }),
+                el("div", { class: "source" }, link(x.source, "Source: " + x.sourceName)))))
+            : el("p", { class: "meta", text: "No lawsuits or laws are listed for this platform yet. General laws in the Legislation section may still apply." })
+        )
+      ));
+    }
+    $("platform-chips").append(...PLATFORMS.map(p =>
+      el("button", { type: "button", role: "tab", "data-id": p.id, text: p.name, onclick: () => showPlatform(p.id) })));
+    showPlatform(PLATFORMS[0].id);
 
     // ---------- Litigation ----------
     function fillSelect(select, label, values) {
