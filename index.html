@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talk About Tech Resource Hub</title>
+  <meta name="description" content="Keep up with social media, AI and tech harm: lawsuits, laws, an interactive map, organizations, resources and a community Q&A.">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --surface-2: #f0eee8;
+      --text: #1d2430;
+      --muted: #5b6472;
+      --border: #e2dfd6;
+      --accent: #2f5d8a;
+      --accent-soft: #e3ecf5;
+      --s-effect: #2e7d6b;
+      --s-partly: #c98a1b;
+      --s-blocked: #b04a4a;
+      --s-litig: #8a6bb8;
+      --s-passed: #3f7fc0;
+      --s-pending: #8a929c;
+      --s-none: #e6e3db;
+      --pin: #d0612f;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(20, 24, 33, 0.06), 0 1px 2px rgba(20, 24, 33, 0.04);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #14171c; --surface: #1c2027; --surface-2: #232832; --text: #e7e9ee;
+        --muted: #a0a8b5; --border: #2e3440; --accent: #8bb4dd; --accent-soft: #24334a;
+        --s-none: #2b303a; --shadow: none;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #14171c; --surface: #1c2027; --surface-2: #232832; --text: #e7e9ee;
+      --muted: #a0a8b5; --border: #2e3440; --accent: #8bb4dd; --accent-soft: #24334a;
+      --s-none: #2b303a; --shadow: none;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+    /* Header & nav */
+    header.top {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    header.top .wrap { display: flex; align-items: center; gap: 16px; min-height: 58px; flex-wrap: wrap; }
+    .brand { font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--text); white-space: nowrap; }
+    .brand span { color: var(--accent); }
+    nav.tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+    nav.tabs a {
+      text-decoration: none; color: var(--muted); padding: 6px 10px; border-radius: 6px;
+      font-size: 0.92rem; white-space: nowrap;
+    }
+    nav.tabs a:hover { background: var(--surface-2); color: var(--text); }
+
+    /* Hero */
+    .hero { padding: 40px 0 24px; }
+    .hero h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin: 0 0 8px; line-height: 1.2; }
+    .hero p { color: var(--muted); max-width: 640px; margin: 0; font-size: 1.05rem; }
+    .crisis {
+      margin-top: 18px; padding: 10px 14px; border-radius: var(--radius);
+      background: var(--accent-soft); font-size: 0.92rem;
+    }
+
+    /* Sections */
+    section { padding: 28px 0; border-top: 1px solid var(--border); }
+    section h2 { margin: 0 0 4px; font-size: 1.45rem; }
+    .section-intro { color: var(--muted); margin: 0 0 16px; }
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .toolbar input, .toolbar select, .forum-form input, .forum-form select, .forum-form textarea, .reply-form input, .reply-form textarea {
+      font: inherit; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px;
+      background: var(--surface); color: var(--text);
+    }
+    .toolbar input { flex: 1; min-width: 200px; }
+
+    /* Cards */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 1.02rem; line-height: 1.35; }
+    .card p { margin: 6px 0; font-size: 0.93rem; }
+    .meta { color: var(--muted); font-size: 0.84rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+    .tag {
+      font-size: 0.76rem; padding: 2px 8px; border-radius: 999px;
+      background: var(--surface-2); color: var(--muted);
+    }
+    .status { font-size: 0.76rem; padding: 2px 8px; border-radius: 999px; color: #fff; font-weight: 600; }
+    .source { font-size: 0.84rem; }
+    .empty { color: var(--muted); padding: 12px 0; }
+
+    /* Latest list */
+    .latest { list-style: none; padding: 0; margin: 0; }
+    .latest li {
+      display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .latest li:last-child { border-bottom: none; }
+    .latest .when { color: var(--muted); font-size: 0.85rem; }
+
+    /* Map */
+    .map-layout { display: grid; grid-template-columns: 1fr 300px; gap: 16px; align-items: start; }
+    .map-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; position: relative; }
+    #map svg { width: 100%; height: auto; display: block; }
+    #map .state { stroke: var(--surface); stroke-width: 0.8; cursor: pointer; transition: opacity .15s; }
+    #map .state:hover { opacity: 0.8; }
+    #map .state.selected { stroke: var(--text); stroke-width: 2; }
+    #map .pin { fill: var(--pin); stroke: var(--surface); stroke-width: 1.5; cursor: pointer; }
+    .toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+    .toggle button {
+      font: inherit; font-size: 0.9rem; border: none; background: var(--surface); color: var(--muted);
+      padding: 6px 14px; cursor: pointer;
+    }
+    .toggle button.active { background: var(--accent); color: var(--surface); }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+    .tooltip {
+      position: absolute; pointer-events: none; background: var(--text); color: var(--bg);
+      padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; opacity: 0; transition: opacity .1s; white-space: nowrap;
+    }
+    #map-panel h3 { margin-top: 0; }
+    #map-panel .card { margin-bottom: 8px; }
+
+    /* Forum */
+    .preview-note {
+      padding: 10px 14px; border-radius: var(--radius); border: 1px dashed var(--s-partly);
+      font-size: 0.9rem; margin-bottom: 14px; background: var(--surface);
+    }
+    .forum-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+    .forum-form { display: grid; gap: 8px; }
+    .forum-form textarea, .reply-form textarea { min-height: 90px; resize: vertical; }
+    button.primary {
+      font: inherit; background: var(--accent); color: var(--surface); border: none; border-radius: 8px;
+      padding: 8px 14px; cursor: pointer; font-weight: 600;
+    }
+    button.link { font: inherit; font-size: 0.84rem; background: none; border: none; color: var(--accent); cursor: pointer; padding: 0; }
+    .thread { margin-bottom: 10px; }
+    .thread .body { white-space: pre-wrap; }
+    .reply { border-left: 3px solid var(--border); padding: 4px 0 4px 12px; margin: 8px 0; font-size: 0.92rem; }
+    .reply-form { display: grid; gap: 6px; margin-top: 8px; }
+    .rules { font-size: 0.86rem; color: var(--muted); }
+    .rules ul { padding-left: 18px; margin: 6px 0; }
+
+    footer { padding: 28px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.86rem; }
+
+    @media (max-width: 820px) {
+      .map-layout, .forum-layout { grid-template-columns: 1fr; }
+      .latest li { grid-template-columns: 1fr; gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#top">Talk About Tech <span>Resource Hub</span></a>
+      <nav class="tabs" aria-label="Sections">
+        <a href="#latest">Latest</a>
+        <a href="#litigation">Litigation</a>
+        <a href="#legislation">Legislation</a>
+        <a href="#map-section">Map</a>
+        <a href="#organizations">Organizations</a>
+        <a href="#resources">Resources</a>
+        <a href="#forum">Q&amp;A Forum</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <div class="hero">
+      <h1>Stay informed about social media, AI and tech harm</h1>
+      <p>A plain-language hub for parents, educators and anyone who wants to keep up with the lawsuits, laws, organizations and resources shaping kids' lives online.</p>
+      <div class="crisis"><strong>Need help now?</strong> Call or text <a href="https://988lifeline.org" target="_blank" rel="noopener">988</a> for the Suicide &amp; Crisis Lifeline. To remove explicit images of a minor, use <a href="https://takeitdown.ncmec.org" target="_blank" rel="noopener">Take It Down</a>.</div>
+    </div>
+
+    <section id="latest">
+      <h2>Latest updates</h2>
+      <p class="section-intro">The most recent developments in lawsuits and laws, newest first.</p>
+      <ul class="latest" id="latest-list"></ul>
+    </section>
+
+    <section id="litigation">
+      <h2>Litigation</h2>
+      <p class="section-intro">Major lawsuits against social media and AI companies over harm to young people.</p>
+      <div class="toolbar">
+        <input type="search" id="lit-search" placeholder="Search lawsuits..." aria-label="Search lawsuits">
+        <select id="lit-topic" aria-label="Filter by topic"></select>
+      </div>
+      <div class="grid" id="lit-list"></div>
+    </section>
+
+    <section id="legislation">
+      <h2>Legislation</h2>
+      <p class="section-intro">Federal and state laws on kids' online safety, social media, AI chatbots and privacy.</p>
+      <div class="toolbar">
+        <input type="search" id="leg-search" placeholder="Search laws..." aria-label="Search laws">
+        <select id="leg-where" aria-label="Filter by place"></select>
+        <select id="leg-status" aria-label="Filter by status"></select>
+      </div>
+      <div class="grid" id="leg-list"></div>
+    </section>
+
+    <section id="map-section">
+      <h2>Interactive map</h2>
+      <p class="section-intro">See which states have passed laws, or where organizations are based. Click a state or a pin for details.</p>
+      <div class="toggle" role="tablist">
+        <button id="mode-laws" class="active" role="tab" aria-selected="true">Laws by state</button>
+        <button id="mode-orgs" role="tab" aria-selected="false">Organizations</button>
+      </div>
+      <div class="map-layout">
+        <div class="map-box">
+          <div id="map"><p class="empty">Loading map…</p></div>
+          <div class="legend" id="legend"></div>
+          <div class="tooltip" id="tooltip"></div>
+        </div>
+        <div id="map-panel"></div>
+      </div>
+    </section>
+
+    <section id="organizations">
+      <h2>Organizations</h2>
+      <p class="section-intro">Groups working on social media and AI harm, online safety and digital wellbeing.</p>
+      <div class="toolbar">
+        <input type="search" id="org-search" placeholder="Search organizations..." aria-label="Search organizations">
+      </div>
+      <div class="grid" id="org-list"></div>
+    </section>
+
+    <section id="resources">
+      <h2>Resources</h2>
+      <p class="section-intro">Trusted places to get help, report a problem, or learn more.</p>
+      <div class="grid" id="res-list"></div>
+    </section>
+
+    <section id="forum">
+      <h2>Q&amp;A Forum</h2>
+      <p class="section-intro">Ask a question, share what's worked for your family, or help answer someone else.</p>
+      <div class="preview-note"><strong>Preview mode:</strong> posts are only saved in your own browser for now. Other visitors can't see them until the forum is connected to a database.</div>
+      <div class="forum-layout">
+        <div>
+          <div class="toolbar">
+            <input type="search" id="forum-search" placeholder="Search questions..." aria-label="Search questions">
+            <select id="forum-cat" aria-label="Filter by category"></select>
+          </div>
+          <div id="thread-list"></div>
+        </div>
+        <div>
+          <div class="card">
+            <h3>Ask a question</h3>
+            <form class="forum-form" id="forum-form">
+              <input id="f-title" required maxlength="140" placeholder="Your question" aria-label="Your question">
+              <select id="f-cat" aria-label="Category"></select>
+              <textarea id="f-body" required maxlength="4000" placeholder="Add details (optional context helps others answer)" aria-label="Details"></textarea>
+              <input id="f-name" maxlength="40" placeholder="Display name (optional)" aria-label="Display name">
+              <button class="primary" type="submit">Post question</button>
+            </form>
+          </div>
+          <div class="card rules" style="margin-top:12px">
+            <strong>Community guidelines</strong>
+            <ul>
+              <li>Be kind. Everyone here is trying to protect kids.</li>
+              <li>Don't share children's names, photos, schools or other personal details.</li>
+              <li>This isn't legal or medical advice. For emergencies, call 911 or 988.</li>
+              <li>Use "Report" for anything harmful.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p><strong>Talk About Tech Resource Hub.</strong> Information last checked <span id="last-checked"></span>. Lawsuits and laws change quickly, so follow the source links for the latest status. Nothing on this site is legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+  <script>
+    // ---------- Helpers ----------
+    const $ = (id) => document.getElementById(id);
+    const el = (tag, attrs = {}, ...kids) => {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === "class") node.className = v;
+        else if (k === "text") node.textContent = v;
+        else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+        else node.setAttribute(k, v);
+      }
+      kids.flat().forEach(k => k != null && node.append(k));
+      return node;
+    };
+    const fmtDate = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const matches = (obj, term) => !term || JSON.stringify(obj).toLowerCase().includes(term);
+    const link = (url, text) => el("a", { href: url, target: "_blank", rel: "noopener", text });
+
+    const STATUS_COLORS = {
+      "In effect": "var(--s-effect)",
+      "Partly blocked": "var(--s-partly)",
+      "Blocked by court": "var(--s-blocked)",
+      "In litigation": "var(--s-litig)",
+      "Passed, not yet in effect": "var(--s-passed)",
+      "Pending": "var(--s-pending)",
+      "Ongoing": "var(--s-litig)",
+      "Verdict reached": "var(--s-partly)",
+      "Settled": "var(--s-effect)"
+    };
+    const statusPill = (s) => el("span", { class: "status", text: s, style: "background:" + (STATUS_COLORS[s] || "var(--s-pending)") });
+
+    const STATES = { AL:"Alabama", AK:"Alaska", AZ:"Arizona", AR:"Arkansas", CA:"California", CO:"Colorado", CT:"Connecticut",
+      DE:"Delaware", DC:"District of Columbia", FL:"Florida", GA:"Georgia", HI:"Hawaii", ID:"Idaho", IL:"Illinois", IN:"Indiana",
+      IA:"Iowa", KS:"Kansas", KY:"Kentucky", LA:"Louisiana", ME:"Maine", MD:"Maryland", MA:"Massachusetts", MI:"Michigan",
+      MN:"Minnesota", MS:"Mississippi", MO:"Missouri", MT:"Montana", NE:"Nebraska", NV:"Nevada", NH:"New Hampshire",
+      NJ:"New Jersey", NM:"New Mexico", NY:"New York", NC:"North Carolina", ND:"North Dakota", OH:"Ohio", OK:"Oklahoma",
+      OR:"Oregon", PA:"Pennsylvania", RI:"Rhode Island", SC:"South Carolina", SD:"South Dakota", TN:"Tennessee", TX:"Texas",
+      UT:"Utah", VT:"Vermont", VA:"Virginia", WA:"Washington", WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming", US:"Federal" };
+    const CODE_BY_NAME = Object.fromEntries(Object.entries(STATES).map(([c, n]) => [n, c]));
+
+    $("last-checked").textContent = LAST_CHECKED;
+
+    // ---------- Latest ----------
+    (function renderLatest() {
+      const items = [
+        ...LITIGATION.map(x => ({ ...x, kind: "Lawsuit", where: x.court })),
+        ...LEGISLATION.map(x => ({ ...x, kind: "Law", where: STATES[x.state] }))
+      ].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
+      $("latest-list").append(...items.map(x =>
+        el("li", {},
+          el("div", { class: "when", text: fmtDate(x.date) }),
+          el("div", {},
+            el("strong", { text: x.name }), " ", statusPill(x.status),
+            el("div", { class: "meta", text: x.kind + " · " + x.where }),
+            el("div", { class: "source" }, link(x.source, "Source: " + x.sourceName))
+          )
+        )
+      ));
+    })();
+
+    // ---------- Litigation ----------
+    function fillSelect(select, label, values) {
+      select.innerHTML = "";
+      select.append(el("option", { value: "", text: label }), ...values.map(v => el("option", { value: v, text: v })));
+    }
+    fillSelect($("lit-topic"), "All topics", [...new Set(LITIGATION.map(x => x.topic))]);
+
+    function renderLitigation() {
+      const term = $("lit-search").value.trim().toLowerCase();
+      const topic = $("lit-topic").value;
+      const list = LITIGATION.filter(x => matches(x, term) && (!topic || x.topic === topic));
+      $("lit-list").replaceChildren(...(list.length ? list.map(x =>
+        el("div", { class: "card" },
+          el("h3", { text: x.name }),
+          el("div", { class: "tags" }, statusPill(x.status), el("span", { class: "tag", text: x.topic })),
+          el("div", { class: "meta", text: x.court }),
+          el("div", { class: "meta", text: x.parties }),
+          el("p", { text: x.summary }),
+          el("div", { class: "source" }, "Updated " + fmtDate(x.date) + " · ", link(x.source, x.sourceName))
+        )) : [el("p", { class: "empty", text: "No lawsuits match your search." })]));
+    }
+    $("lit-search").addEventListener("input", renderLitigation);
+    $("lit-topic").addEventListener("change", renderLitigation);
+    renderLitigation();
+
+    // ---------- Legislation ----------
+    const legPlaces = [...new Set(LEGISLATION.map(x => x.state))]
+      .sort((a, b) => a === "US" ? -1 : b === "US" ? 1 : STATES[a].localeCompare(STATES[b]));
+    $("leg-where").replaceChildren(el("option", { value: "", text: "All places" }),
+      ...legPlaces.map(c => el("option", { value: c, text: STATES[c] })));
+    fillSelect($("leg-status"), "All statuses", [...new Set(LEGISLATION.map(x => x.status))]);
+
+    function lawCard(x) {
+      return el("div", { class: "card" },
+        el("h3", { text: x.name }),
+        el("div", { class: "tags" }, statusPill(x.status), el("span", { class: "tag", text: STATES[x.state] }), el("span", { class: "tag", text: x.topic })),
+        el("p", { text: x.summary }),
+        el("div", { class: "source" }, "Updated " + fmtDate(x.date) + " · ", link(x.source, x.sourceName))
+      );
+    }
+    function renderLegislation() {
+      const term = $("leg-search").value.trim().toLowerCase();
+      const where = $("leg-where").value, status = $("leg-status").value;
+      const list = LEGISLATION.filter(x => matches(x, term) && (!where || x.state === where) && (!status || x.status === status));
+      $("leg-list").replaceChildren(...(list.length ? list.map(lawCard) : [el("p", { class: "empty", text: "No laws match your search." })]));
+    }
+    ["leg-search", "leg-where", "leg-status"].forEach(id => $(id).addEventListener(id === "leg-search" ? "input" : "change", renderLegislation));
+    renderLegislation();
+
+    // ---------- Organizations ----------
+    function orgCard(o) {
+      return el("div", { class: "card" },
+        el("h3", {}, link(o.url, o.name)),
+        el("div", { class: "meta", text: o.city + ", " + o.state }),
+        el("div", { class: "tags" }, ...o.focus.map(f => el("span", { class: "tag", text: f }))),
+        el("p", { text: o.about })
+      );
+    }
+    function renderOrgs() {
+      const term = $("org-search").value.trim().toLowerCase();
+      const list = ORGANIZATIONS.filter(o => matches(o, term));
+      $("org-list").replaceChildren(...(list.length ? list.map(orgCard) : [el("p", { class: "empty", text: "No organizations match your search." })]));
+    }
+    $("org-search").addEventListener("input", renderOrgs);
+    renderOrgs();
+
+    // ---------- Resources ----------
+    $("res-list").append(...RESOURCES.map(r =>
+      el("div", { class: "card" },
+        el("span", { class: "tag", text: r.type }),
+        el("h3", { style: "margin-top:8px" }, link(r.url, r.title)),
+        el("p", { text: r.about })
+      )));
+
+    // ---------- Map ----------
+    const STATUS_RANK = ["Blocked by court", "Partly blocked", "In litigation", "Passed, not yet in effect", "In effect"];
+    const lawsByState = {};
+    LEGISLATION.filter(x => x.state !== "US").forEach(x => (lawsByState[x.state] ||= []).push(x));
+    // Color a state by its most "active" law: In effect beats litigation beats blocked.
+    const stateStatus = (code) => {
+      const laws = lawsByState[code];
+      if (!laws) return null;
+      return laws.map(l => l.status).sort((a, b) => STATUS_RANK.indexOf(b) - STATUS_RANK.indexOf(a))[0];
+    };
+
+    let mapMode = "laws";
+    let svg, statePaths, pinLayer, projection;
+
+    function showLegend() {
+      const lg = $("legend");
+      lg.replaceChildren();
+      if (mapMode === "laws") {
+        [...STATUS_RANK].reverse().forEach(s => lg.append(el("span", {}, el("i", { style: "background:" + STATUS_COLORS[s] }), s)));
+        lg.append(el("span", {}, el("i", { style: "background:var(--s-none)" }), "No law listed yet"));
+      } else {
+        lg.append(el("span", {}, el("i", { style: "background:var(--pin);border-radius:50%" }), "Organization (bigger = more groups)"));
+      }
+    }
+
+    function showPanelDefault() {
+      const p = $("map-panel");
+      if (mapMode === "laws") {
+        const fed = LEGISLATION.filter(x => x.state === "US");
+        p.replaceChildren(el("h3", { text: "Federal laws" }), el("p", { class: "meta", text: "Click a state on the map to see its laws." }), ...fed.map(lawCard));
+      } else {
+        p.replaceChildren(el("h3", { text: "Organizations" }), el("p", { class: "meta", text: "Click a pin to see the organizations based there." }));
+      }
+    }
+
+    function selectState(code, name) {
+      statePaths.classed("selected", d => d.properties.name === name);
+      const laws = lawsByState[code] || [];
+      $("map-panel").replaceChildren(
+        el("h3", { text: name }),
+        ...(laws.length ? laws.map(lawCard) : [el("p", { class: "meta", text: "No laws listed for this state yet. Federal laws still apply everywhere." })])
+      );
+    }
+
+    function setMode(mode) {
+      mapMode = mode;
+      $("mode-laws").classList.toggle("active", mode === "laws");
+      $("mode-orgs").classList.toggle("active", mode === "orgs");
+      $("mode-laws").setAttribute("aria-selected", mode === "laws");
+      $("mode-orgs").setAttribute("aria-selected", mode === "orgs");
+      if (statePaths) {
+        statePaths.classed("selected", false)
+          .attr("fill", d => {
+            if (mode === "orgs") return "var(--s-none)";
+            const s = stateStatus(CODE_BY_NAME[d.properties.name]);
+            return s ? STATUS_COLORS[s] : "var(--s-none)";
+          });
+        pinLayer.style("display", mode === "orgs" ? null : "none");
+      }
+      showLegend();
+      showPanelDefault();
+    }
+    $("mode-laws").addEventListener("click", () => setMode("laws"));
+    $("mode-orgs").addEventListener("click", () => setMode("orgs"));
+
+    async function drawMap() {
+      const tip = $("tooltip");
+      const box = document.querySelector(".map-box");
+      const moveTip = (event, text) => {
+        const r = box.getBoundingClientRect();
+        tip.textContent = text;
+        tip.style.left = (event.clientX - r.left + 12) + "px";
+        tip.style.top = (event.clientY - r.top + 12) + "px";
+        tip.style.opacity = 1;
+      };
+      const hideTip = () => { tip.style.opacity = 0; };
+
+      try {
+        const us = await d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
+        const states = topojson.feature(us, us.objects.states);
+        const width = 960, height = 600;
+        projection = d3.geoAlbersUsa().fitSize([width, height], states);
+        const path = d3.geoPath(projection);
+
+        $("map").replaceChildren();
+        svg = d3.select("#map").append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("role", "img")
+          .attr("aria-label", "Map of the United States");
+
+        statePaths = svg.append("g").selectAll("path").data(states.features).join("path")
+          .attr("class", "state").attr("d", path)
+          .on("mousemove", (event, d) => {
+            const code = CODE_BY_NAME[d.properties.name];
+            const n = (lawsByState[code] || []).length;
+            moveTip(event, d.properties.name + (mapMode === "laws" ? ` · ${n} law${n === 1 ? "" : "s"} listed` : ""));
+          })
+          .on("mouseleave", hideTip)
+          .on("click", (event, d) => { if (mapMode === "laws") selectState(CODE_BY_NAME[d.properties.name], d.properties.name); });
+
+        // Group organizations by city so overlapping pins become one bigger pin.
+        const byCity = d3.groups(ORGANIZATIONS, o => o.city + ", " + o.state);
+        pinLayer = svg.append("g");
+        pinLayer.selectAll("circle").data(byCity).join("circle")
+          .attr("class", "pin")
+          .attr("r", ([, orgs]) => 6 + orgs.length * 2.5)
+          .attr("transform", ([, orgs]) => { const p = projection([orgs[0].lon, orgs[0].lat]); return p ? `translate(${p})` : "translate(-99,-99)"; })
+          .on("mousemove", (event, [city, orgs]) => moveTip(event, `${city} · ${orgs.length} organization${orgs.length === 1 ? "" : "s"}`))
+          .on("mouseleave", hideTip)
+          .on("click", (event, [city, orgs]) => $("map-panel").replaceChildren(el("h3", { text: city }), ...orgs.map(orgCard)));
+      } catch (err) {
+        $("map").replaceChildren(el("p", { class: "empty", text: "The map couldn't load. Check your internet connection and refresh the page." }));
+      }
+      setMode(mapMode);
+    }
+    drawMap();
+
+    // ---------- Q&A Forum (preview: saved in this browser only) ----------
+    const CATEGORIES = ["Social media", "AI chatbots", "Laws & lawsuits", "Parenting tips", "Other"];
+    fillSelect($("forum-cat"), "All categories", CATEGORIES);
+    $("f-cat").replaceChildren(...CATEGORIES.map(c => el("option", { value: c, text: c })));
+
+    const FORUM_KEY = "tat-forum-v1";
+    const EXAMPLES = [
+      { id: "ex1", example: true, title: "What age did you give your kid a smartphone?", category: "Parenting tips", author: "Example post",
+        body: "My daughter is 11 and says everyone in her class has one. Curious what other families decided and why.", created: "2026-11-10T15:00:00Z",
+        replies: [{ author: "Example reply", body: "We started with a basic phone for calls and texts at 12, and added apps one at a time.", created: "2026-11-11T09:00:00Z" }] },
+      { id: "ex2", example: true, title: "How do I know if my teen is using an AI chatbot as a 'friend'?", category: "AI chatbots", author: "Example post",
+        body: "I've heard about companion chatbots. What signs should I look for, and how do I bring it up without a fight?", created: "2026-11-12T18:30:00Z", replies: [] }
+    ];
+    function loadThreads() {
+      try { const saved = JSON.parse(localStorage.getItem(FORUM_KEY)); if (Array.isArray(saved)) return saved; } catch (e) {}
+      return EXAMPLES;
+    }
+    function saveThreads() { try { localStorage.setItem(FORUM_KEY, JSON.stringify(threads)); } catch (e) {} }
+    let threads = loadThreads();
+    const timeAgo = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+    function renderThreads() {
+      const term = $("forum-search").value.trim().toLowerCase();
+      const cat = $("forum-cat").value;
+      const list = threads.filter(t => !t.hidden && matches(t, term) && (!cat || t.category === cat))
+        .sort((a, b) => b.created.localeCompare(a.created));
+      $("thread-list").replaceChildren(...(list.length ? list.map(t => {
+        const replyForm = el("form", { class: "reply-form", style: "display:none" },
+          el("textarea", { required: "", maxlength: "4000", placeholder: "Write a reply", "aria-label": "Reply" }),
+          el("input", { maxlength: "40", placeholder: "Display name (optional)", "aria-label": "Display name" }),
+          el("button", { class: "primary", type: "submit", text: "Post reply" }));
+        replyForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const [body, name] = replyForm.querySelectorAll("textarea, input");
+          t.replies.push({ author: name.value.trim() || "Anonymous", body: body.value.trim(), created: new Date().toISOString() });
+          saveThreads(); renderThreads();
+        });
+        return el("div", { class: "card thread" },
+          el("h3", { text: t.title }),
+          el("div", { class: "tags" }, el("span", { class: "tag", text: t.category }), t.example ? el("span", { class: "tag", text: "Example" }) : null),
+          el("div", { class: "meta", text: `${t.author} · ${timeAgo(t.created)} · ${t.replies.length} repl${t.replies.length === 1 ? "y" : "ies"}` }),
+          el("p", { class: "body", text: t.body }),
+          ...t.replies.map(r => el("div", { class: "reply" }, el("div", { class: "meta", text: `${r.author} · ${timeAgo(r.created)}` }), el("div", { class: "body", text: r.body }))),
+          el("div", { style: "display:flex;gap:14px" },
+            el("button", { class: "link", type: "button", text: "Reply", onclick: () => { replyForm.style.display = replyForm.style.display === "none" ? "grid" : "none"; } }),
+            el("button", { class: "link", type: "button", text: "Report", onclick: () => {
+              if (confirm("Report this post as harmful? It will be hidden.")) { t.hidden = true; saveThreads(); renderThreads(); }
+            } })),
+          replyForm
+        );
+      }) : [el("p", { class: "empty", text: "No questions match. Be the first to ask!" })]));
+    }
+    $("forum-search").addEventListener("input", renderThreads);
+    $("forum-cat").addEventListener("change", renderThreads);
+    $("forum-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      threads.push({
+        id: "t" + Date.now(), title: $("f-title").value.trim(), category: $("f-cat").value,
+        body: $("f-body").value.trim(), author: $("f-name").value.trim() || "Anonymous",
+        created: new Date().toISOString(), replies: []
+      });
+      saveThreads();
+      e.target.reset();
+      $("forum-search").value = ""; $("forum-cat").value = "";
+      renderThreads();
+    });
+    renderThreads();
+  </script>
+</body>
+</html>
