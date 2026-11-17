@@ -9,21 +9,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
   <style>
-    /* Layout: a deep-blue "briefing" panel up top, then calm card sections. Warm marigold marks what needs attention. */
+    /* Layout: a light green "briefing" panel up top on a clean white page, then calm card sections. Bright green marks key actions. */
     :root {
-      --bg: #f4f6f9;
+      --bg: #ffffff;
       --surface: #ffffff;
-      --surface-2: #eaeef4;
-      --text: #15202e;
-      --muted: #556173;
-      --border: #dbe1ea;
-      --accent: #1d4e89;
-      --accent-soft: #e2ebf7;
-      --warm: #f2a93b;
-      --warm-soft: #fdf1dc;
-      --band: #13294b;
-      --on-band: #ffffff;
-      --on-band-muted: #c4d3ea;
+      --surface-2: #f0f6f2;
+      --text: #14241b;
+      --muted: #536359;
+      --border: #dce7e0;
+      --accent: #1b7046;
+      --accent-soft: #e3f2e9;
+      --warm: #2fae68;
+      --on-warm: #ffffff;
+      --warm-soft: #eef7f1;
+      --band: #e6f3eb;
+      --on-band: #10301f;
+      --on-band-muted: #3f5a4a;
+      --band-line: #b9dcc6;
       --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
       --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       --s-effect: #2e7d6b;
@@ -39,17 +41,19 @@
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg: #0f1622; --surface: #172131; --surface-2: #1e2a3d; --text: #e8edf4;
-        --muted: #9fadc2; --border: #2a374b; --accent: #8cb8f0; --accent-soft: #1f3352;
-        --warm: #f2b45a; --warm-soft: #33270f; --band: #0b1a30;
-        --s-none: #263246; --shadow: none; color-scheme: dark;
+        --bg: #0e1612; --surface: #15211b; --surface-2: #1b2b23; --text: #e6f0ea;
+        --muted: #9db3a6; --border: #26382e; --accent: #6fd39b; --accent-soft: #1b3326;
+        --warm: #4cc983; --on-warm: #062314; --warm-soft: #16291f; --band: #132a1e;
+        --on-band: #e6f0ea; --on-band-muted: #a9c4b4; --band-line: #2d4a3a;
+        --s-none: #22342a; --shadow: none; color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
-      --bg: #0f1622; --surface: #172131; --surface-2: #1e2a3d; --text: #e8edf4;
-      --muted: #9fadc2; --border: #2a374b; --accent: #8cb8f0; --accent-soft: #1f3352;
-      --warm: #f2b45a; --warm-soft: #33270f; --band: #0b1a30;
-      --s-none: #263246; --shadow: none; color-scheme: dark;
+      --bg: #0e1612; --surface: #15211b; --surface-2: #1b2b23; --text: #e6f0ea;
+      --muted: #9db3a6; --border: #26382e; --accent: #6fd39b; --accent-soft: #1b3326;
+      --warm: #4cc983; --on-warm: #062314; --warm-soft: #16291f; --band: #132a1e;
+      --on-band: #e6f0ea; --on-band-muted: #a9c4b4; --band-line: #2d4a3a;
+      --s-none: #22342a; --shadow: none; color-scheme: dark;
     }
 
     * { box-sizing: border-box; }
@@ -91,10 +95,10 @@
     .hero p { color: var(--muted); max-width: 640px; margin: 0; font-size: 1.05rem; }
     .hero-panel {
       margin: 24px 0 14px; padding: clamp(24px, 5vw, 44px); border-radius: 18px;
-      background: var(--band); color: var(--on-band); border: 1px solid var(--border);
+      background: var(--band); color: var(--on-band); border: 1px solid var(--band-line);
       display: grid; gap: 22px;
     }
-    .hero-panel .eyebrow { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm); margin: 0; }
+    .hero-panel .eyebrow { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 0; }
     .hero-panel h1 { font-size: clamp(1.9rem, 5vw, 3rem); line-height: 1.08; margin: 0; font-weight: 800; letter-spacing: -0.02em; max-width: 18ch; }
     .hero-panel .lede { color: var(--on-band-muted); max-width: 60ch; margin: 0; font-size: 1.05rem; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -104,14 +108,14 @@
     .quick { display: flex; flex-wrap: wrap; gap: 10px; }
     .quick a {
       text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 10px 16px; border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.28); color: var(--on-band);
+      border: 1px solid var(--band-line); color: var(--on-band); background: var(--surface);
     }
-    .quick a:hover { background: rgba(255, 255, 255, 0.1); }
-    .quick a.primary { background: var(--warm); border-color: var(--warm); color: #1b1203; }
+    .quick a:hover { border-color: var(--accent); }
+    .quick a.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
     .quick a.primary:hover { filter: brightness(1.06); }
     .crisis {
       padding: 12px 16px; border-radius: var(--radius);
-      background: var(--warm-soft); font-size: 0.92rem; margin-bottom: 8px;
+      background: var(--warm-soft); border: 1px solid var(--border); font-size: 0.92rem; margin-bottom: 8px;
     }
     @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 
