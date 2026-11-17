@@ -190,6 +190,55 @@
     .platform-lawsuits { margin-bottom: 22px; }
     .platform-lawsuits h3 { margin: 0 0 8px; font-size: 1.1rem; }
 
+    /* Research and organizations */
+    .findings { margin: 8px 0; padding-left: 18px; font-size: 0.92rem; }
+    .findings li { margin: 4px 0; }
+    .org-cta { margin-top: 16px; }
+    .cta-btn {
+      display: inline-block; text-decoration: none; font-weight: 600; padding: 10px 18px; border-radius: 999px;
+      background: var(--accent); color: var(--surface);
+    }
+
+    /* Ask the Hub chat */
+    .ask-btn {
+      font: inherit; font-weight: 600; font-size: 0.9rem; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+      background: var(--accent); color: var(--surface); border: none; white-space: nowrap;
+    }
+    .chat-panel {
+      position: fixed; z-index: 30;
+      right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      width: min(400px, calc(100vw - 32px)); height: min(600px, calc(100vh - 100px));
+      display: flex; flex-direction: column;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(10, 30, 20, 0.18);
+    }
+    .chat-panel[hidden] { display: none !important; }
+    .chat-head { display: flex; justify-content: space-between; align-items: start; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--band); color: var(--on-band); border-radius: 16px 16px 0 0; }
+    .chat-sub { font-size: 0.8rem; color: var(--on-band-muted); }
+    .chat-close { font: inherit; font-size: 1.4rem; line-height: 1; background: none; border: none; cursor: pointer; color: var(--on-band); }
+    .chat-log { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 92%; padding: 10px 12px; border-radius: 12px; font-size: 0.92rem; }
+    .msg p { margin: 0 0 6px; }
+    .msg p:last-child { margin-bottom: 0; }
+    .msg.user { align-self: flex-end; background: var(--accent); color: var(--surface); white-space: pre-wrap; }
+    .msg.bot { align-self: flex-start; background: var(--surface-2); }
+    .msg.error { background: var(--warm-soft); border: 1px solid var(--border); }
+    .msg sup a { font-size: 0.75rem; text-decoration: none; font-weight: 600; }
+    .msg .cites { margin: 8px 0 0; padding-left: 18px; font-size: 0.8rem; }
+    .chat-note { font-size: 0.78rem; color: var(--muted); }
+    .chat-suggest { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chat-suggest button {
+      font: inherit; font-size: 0.8rem; padding: 5px 10px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text); text-align: left;
+    }
+    .chat-suggest button:hover { border-color: var(--accent); }
+    .chat-form { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border); }
+    .chat-form textarea {
+      flex: 1; min-width: 0; font: inherit; font-size: 0.92rem; padding: 8px 10px; resize: none;
+      border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text);
+    }
+    .typing { color: var(--muted); font-style: italic; }
+
     /* Latest list */
     .latest { list-style: none; padding: 0; margin: 0; }
     .latest li {
@@ -228,7 +277,7 @@
       font-size: 0.9rem; margin-bottom: 14px; background: var(--surface);
     }
     .forum-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
-    .forum-form { display: grid; gap: 8px; }
+    .forum-form { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
     .forum-form textarea, .reply-form textarea { min-height: 90px; resize: vertical; }
     button.primary {
       font: inherit; background: var(--accent); color: var(--surface); border: none; border-radius: 8px;
@@ -264,13 +313,16 @@
         <a href="#latest">Latest</a>
         <a href="#platforms">Platforms</a>
         <a href="#harms" class="tab-link">Harms by App</a>
+        <a href="#research" class="tab-link">Research</a>
         <a href="#litigation">Litigation</a>
         <a href="#legislation">Legislation</a>
         <a href="#map-section">Map</a>
         <a href="#organizations">Organizations</a>
+        <a href="#get-listed">For Organizations</a>
         <a href="#resources">Resources</a>
         <a href="#forum">Q&amp;A Forum</a>
       </nav>
+      <button type="button" class="ask-btn" id="open-chat" aria-controls="chat-panel" aria-expanded="false">Ask the Hub</button>
     </div>
   </header>
 
@@ -355,6 +407,26 @@
       <div class="grid" id="org-list"></div>
     </section>
 
+    <section id="get-listed">
+      <h2>For organizations</h2>
+      <p class="section-intro">Work on social media, AI or online safety? Connect with the hub so parents can find you.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Join the directory</h3>
+          <p>Add your organization to the directory and the map, with your focus areas and links.</p>
+        </div>
+        <div class="card">
+          <h3>Share an update</h3>
+          <p>Tell us about news, events, new resources, reports or volunteer openings. Approved updates appear on the hub.</p>
+        </div>
+        <div class="card">
+          <h3>Answer our Q&amp;A</h3>
+          <p>Share who you serve, how families can get help, and what you wish every parent knew. We may feature your answers.</p>
+        </div>
+      </div>
+      <div class="org-cta" id="org-cta"></div>
+    </section>
+
     <section id="resources">
       <h2>Resources</h2>
       <p class="section-intro">Trusted places to get help, report a problem, or learn more.</p>
@@ -398,6 +470,21 @@
     </section>
   </main>
 
+  <main class="wrap" id="research" hidden>
+    <div class="hero">
+      <a href="#top" class="back">← Back to the hub</a>
+      <h1>Research</h1>
+      <p>Studies, government advisories and expert reports on kids, social media and AI, with the key findings in plain language.</p>
+    </div>
+    <section>
+      <div class="toolbar">
+        <input type="search" id="research-search" placeholder="Search research..." aria-label="Search research">
+        <select id="research-topic" aria-label="Filter by topic"></select>
+      </div>
+      <div class="grid" id="research-list"></div>
+    </section>
+  </main>
+
   <main class="wrap" id="harms" hidden>
     <div class="hero">
       <a href="#top" class="back">← Back to the hub</a>
@@ -431,10 +518,33 @@
     </div>
   </footer>
 
-  <script src="data.js"></script>
+  <aside class="chat-panel" id="chat-panel" hidden aria-label="Ask the Hub chat">
+    <div class="chat-head">
+      <div>
+        <strong>Ask the Hub</strong>
+        <div class="chat-sub">Answers come only from the sources in this hub.</div>
+      </div>
+      <button type="button" class="chat-close" id="close-chat" aria-label="Close chat">×</button>
+    </div>
+    <div class="chat-log" id="chat-log" aria-live="polite">
+      <div class="msg bot">
+        <p>Hi! Ask me about lawsuits, laws, apps or research in this hub. I'll link the sources for everything I say.</p>
+        <p class="chat-note">Not legal or medical advice. In a crisis, call or text 988, or call 911.</p>
+      </div>
+      <div class="chat-suggest" id="chat-suggest"></div>
+    </div>
+    <form class="chat-form" id="chat-form">
+      <textarea id="chat-input" rows="2" maxlength="1000" placeholder="Ask a question..." aria-label="Your question" required></textarea>
+      <button type="submit" class="primary" id="chat-send">Send</button>
+    </form>
+  </aside>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
-  <script>
+  <script type="module">
+    // All site content lives in data.js (shared with the chatbot server in worker.js).
+    import { LAST_CHECKED, LITIGATION, LEGISLATION, ORGANIZATIONS, PLATFORMS, HARMS, RESOURCES, RESEARCH, ORG_FORM_URL } from "./data.js";
+
     // ---------- Helpers ----------
     const $ = (id) => document.getElementById(id);
     const el = (tag, attrs = {}, ...kids) => {
@@ -548,13 +658,38 @@
         : el("p", { class: "meta", text: "No lawsuits listed yet." }));
     }));
 
-    // Switch between the main hub and the Harms by App tab based on the address (#harms or #harm-...).
+    // ---------- Research tab ----------
+    fillSelect($("research-topic"), "All topics", [...new Set(RESEARCH.flatMap(r => r.topics))]);
+    function renderResearch() {
+      const term = $("research-search").value.trim().toLowerCase();
+      const topic = $("research-topic").value;
+      const list = RESEARCH.filter(r => matches(r, term) && (!topic || r.topics.includes(topic)))
+        .sort((a, b) => b.date.localeCompare(a.date));
+      $("research-list").replaceChildren(...(list.length ? list.map(r => el("div", { class: "card" },
+        el("span", { class: "tag", text: r.type }),
+        el("h3", { style: "margin-top:8px" }, link(r.url, r.title)),
+        el("div", { class: "meta", text: r.org + " · " + fmtDate(r.date) }),
+        el("p", { text: r.summary }),
+        el("ul", { class: "findings" }, ...r.findings.map(f => el("li", { text: f }))),
+        el("div", { class: "tags" }, ...r.topics.map(t => el("span", { class: "tag", text: t })))
+      )) : [el("p", { class: "empty", text: "No research matches your search." })]));
+    }
+    $("research-search").addEventListener("input", renderResearch);
+    $("research-topic").addEventListener("change", renderResearch);
+    renderResearch();
+
+    // ---------- For organizations ----------
+    $("org-cta").replaceChildren(ORG_FORM_URL
+      ? el("a", { class: "cta-btn", href: ORG_FORM_URL, target: "_blank", rel: "noopener", text: "Connect your organization" })
+      : el("p", { class: "meta", text: "The organization sign-up form is coming soon." }));
+
+    // Switch between the main hub and the separate tabs (#harms, #harm-..., #research) based on the address.
+    const VIEWS = ["top", "harms", "research"];
     function route() {
       const h = decodeURIComponent(location.hash.slice(1));
-      const onHarms = h === "harms" || h.startsWith("harm-");
-      $("top").hidden = onHarms;
-      $("harms").hidden = !onHarms;
-      if (h === "harms") window.scrollTo(0, 0);
+      const view = h === "harms" || h.startsWith("harm-") ? "harms" : h === "research" ? "research" : "top";
+      VIEWS.forEach(v => { $(v).hidden = v !== view; });
+      if (h === "harms" || h === "research") window.scrollTo(0, 0);
       else if (h) { const t = document.getElementById(h); if (t) t.scrollIntoView(); }
     }
     window.addEventListener("hashchange", route);
@@ -862,6 +997,95 @@
       renderThreads();
     });
     renderThreads();
+
+    // ---------- Ask the Hub chat (answers come from /api/chat in worker.js) ----------
+    const chatHistory = [];
+    const SUGGESTIONS = [
+      "What did the Meta settlement require?",
+      "Is Roblox safe for my 10-year-old?",
+      "What are the risks of AI companion chatbots?",
+      "Which states have social media laws?"
+    ];
+    function setChatOpen(open) {
+      $("chat-panel").hidden = !open;
+      $("open-chat").setAttribute("aria-expanded", String(open));
+      if (open) $("chat-input").focus();
+    }
+    $("open-chat").addEventListener("click", () => setChatOpen($("chat-panel").hidden));
+    $("close-chat").addEventListener("click", () => setChatOpen(false));
+    $("chat-suggest").append(...SUGGESTIONS.map(q => el("button", { type: "button", text: q, onclick: () => askHub(q) })));
+
+    // Turn the answer text into safe HTML: paragraphs, bullet lists, and [S12] markers as links to sources.
+    function renderAnswer(text, sources) {
+      const byId = Object.fromEntries((sources || []).map(s => [s.id, s]));
+      const box = el("div", { class: "msg bot" });
+      const addInline = (parent, line) => {
+        line.split(/(\[S\d+\])/g).forEach(part => {
+          const m = part.match(/^\[(S\d+)\]$/);
+          if (m && byId[m[1]]) parent.append(el("sup", {}, link(byId[m[1]].url, "[" + (sources.indexOf(byId[m[1]]) + 1) + "]")));
+          else if (!m) parent.append(part.replace(/\*\*/g, ""));
+        });
+      };
+      text.trim().split(/\n{2,}/).forEach(block => {
+        const lines = block.split("\n");
+        if (lines.every(l => /^\s*[-•*]\s+/.test(l))) {
+          const ul = el("ul", { class: "findings" });
+          lines.forEach(l => { const li = el("li"); addInline(li, l.replace(/^\s*[-•*]\s+/, "")); ul.append(li); });
+          box.append(ul);
+        } else {
+          const p = el("p"); addInline(p, lines.join(" ")); box.append(p);
+        }
+      });
+      if (sources && sources.length) {
+        box.append(el("ol", { class: "cites" }, ...sources.map(s => el("li", {}, link(s.url, s.title)))));
+      }
+      return box;
+    }
+
+    async function askHub(question) {
+      question = question.trim();
+      if (!question || $("chat-send").disabled) return;
+      setChatOpen(true);
+      $("chat-suggest").remove?.();
+      const log = $("chat-log");
+      log.append(el("div", { class: "msg user", text: question }));
+      const typing = el("div", { class: "msg bot typing", text: "Looking through the hub's sources…" });
+      log.append(typing);
+      log.scrollTop = log.scrollHeight;
+      $("chat-send").disabled = true;
+      chatHistory.push({ role: "user", content: question });
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: chatHistory.slice(-8) })
+        });
+        const data = await res.json().catch(() => ({}));
+        typing.remove();
+        if (!res.ok || !data.answer) {
+          chatHistory.pop();
+          log.append(el("div", { class: "msg bot error", text: data.error || "Sorry, the assistant isn't available right now. Please try again later." }));
+        } else {
+          chatHistory.push({ role: "assistant", content: data.answer });
+          log.append(renderAnswer(data.answer, data.sources));
+        }
+      } catch (err) {
+        typing.remove();
+        chatHistory.pop();
+        log.append(el("div", { class: "msg bot error", text: "Couldn't reach the assistant. Check your connection and try again." }));
+      }
+      $("chat-send").disabled = false;
+      log.scrollTop = log.scrollHeight;
+    }
+    $("chat-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = $("chat-input").value;
+      $("chat-input").value = "";
+      askHub(q);
+    });
+    $("chat-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("chat-form").requestSubmit(); }
+    });
 
     // Show the right tab for the current address.
     route();

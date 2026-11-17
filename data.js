@@ -6,11 +6,11 @@
 // Last checked: November 2026. Laws and cases change quickly.
 // ============================================================
 
-const LAST_CHECKED = "November 2026";
+export const LAST_CHECKED = "November 2026";
 
 // ---------- LITIGATION ----------
 // platforms: which apps the case is about (ids from the PLATFORMS list below).
-const LITIGATION = [
+export const LITIGATION = [
   {
     name: "In re: Social Media Adolescent Addiction (MDL 3047)",
     court: "Federal court, N.D. California",
@@ -173,7 +173,7 @@ const LITIGATION = [
 // state: two-letter code, or "US" for federal.
 // status must be one of: "In effect", "Partly blocked", "Blocked by court",
 // "In litigation", "Passed, not yet in effect", "Pending"
-const LEGISLATION = [
+export const LEGISLATION = [
   {
     name: "Kids Online Safety Act (KOSA)",
     state: "US",
@@ -358,7 +358,7 @@ const LEGISLATION = [
 
 // ---------- ORGANIZATIONS ----------
 // lon/lat place the pin on the map.
-const ORGANIZATIONS = [
+export const ORGANIZATIONS = [
   { name: "Common Sense Media", city: "San Francisco", state: "CA", lon: -122.42, lat: 37.77,
     focus: ["Social media", "AI", "Parent guides"],
     about: "Age ratings and reviews of apps, games and media, plus parent guides and research on kids and technology.",
@@ -400,7 +400,7 @@ const ORGANIZATIONS = [
 // ---------- PLATFORMS ----------
 // match: words to look for in lawsuits and laws, so related items show up automatically.
 // topic: also show lawsuits and laws with this topic (optional).
-const PLATFORMS = [
+export const PLATFORMS = [
   { id: "meta", name: "Meta", includes: "Facebook, Messenger, WhatsApp, Meta AI",
     minAge: "13+",
     about: "Meta owns Facebook, Instagram, Messenger and WhatsApp, and puts its Meta AI assistant inside all of them.",
@@ -458,7 +458,7 @@ const PLATFORMS = [
 // ---------- HARMS ----------
 // Common areas of harm and the apps most often linked to them in research,
 // news investigations and lawsuits. group: "Social media" or "AI chatbots".
-const HARMS = [
+export const HARMS = [
   { name: "Compulsive use and addictive design", group: "Social media",
     platforms: ["tiktok", "google", "instagram", "snapchat", "meta"],
     about: "Infinite scroll, autoplay, Streaks and constant notifications keep kids on apps longer than they want. About 1 in 5 U.S. teens say they're on TikTok 'almost constantly', and 17% say the same about YouTube. Dozens of state lawsuits target these design features.",
@@ -524,7 +524,7 @@ const HARMS = [
 ];
 
 // ---------- RESOURCES ----------
-const RESOURCES = [
+export const RESOURCES = [
   { title: "988 Suicide & Crisis Lifeline", type: "Get help now",
     about: "Call or text 988, any time, for free and confidential support.",
     url: "https://988lifeline.org" },
@@ -547,3 +547,59 @@ const RESOURCES = [
     about: "Consumer advice from the Federal Trade Commission on kids' privacy and online safety.",
     url: "https://consumer.ftc.gov/identity-theft-and-online-security/protecting-kids-online" }
 ];
+
+// ---------- RESEARCH ----------
+// Studies, advisories and reports. The chatbot also answers from these.
+export const RESEARCH = [
+  { title: "Teens, Social Media and AI Chatbots 2025", org: "Pew Research Center", date: "2025-12-09", type: "Survey",
+    topics: ["Social media", "AI chatbots"], platforms: ["google", "tiktok", "instagram", "snapchat", "ai"],
+    summary: "A national survey of 1,458 U.S. teens (ages 13–17) conducted in fall 2025 on which platforms they use and how often.",
+    findings: ["YouTube is used by 92% of teens, TikTok by 68%, Instagram by 63% and Snapchat by 55%.",
+               "21% of teens say they use TikTok 'almost constantly'; 17% say the same about YouTube.",
+               "46% of teens say they are online almost constantly."],
+    url: "https://www.pewresearch.org/internet/2025/12/09/teens-social-media-and-ai-chatbots-2025/" },
+  { title: "Social Media and Youth Mental Health: Surgeon General's Advisory", org: "U.S. Surgeon General", date: "2023-05-23", type: "Government advisory",
+    topics: ["Social media", "Mental health"], platforms: [],
+    summary: "The U.S. Surgeon General's review of the evidence on social media and young people's mental health.",
+    findings: ["We cannot yet conclude social media is sufficiently safe for children and adolescents.",
+               "Frequent use may affect brain development in areas linked to emotional learning and impulse control.",
+               "Calls on tech companies, policymakers and families to act, including setting tech-free zones at home."],
+    url: "https://www.hhs.gov/surgeongeneral/reports-and-publications/youth-mental-health/social-media/index.html" },
+  { title: "Health Advisory on Social Media Use in Adolescence", org: "American Psychological Association", date: "2023-05-09", type: "Professional guidance",
+    topics: ["Social media", "Mental health"], platforms: [],
+    summary: "Ten evidence-based recommendations from psychologists for teens' social media use.",
+    findings: ["Social media is neither inherently good nor bad; effects depend on features, content and the teen.",
+               "Recommends adult monitoring for younger teens and limiting exposure to content about self-harm and disordered eating.",
+               "Advises that social media should not interfere with sleep and physical activity."],
+    url: "https://www.apa.org/topics/social-media-internet/health-advisory-adolescent-social-media-use" },
+  { title: "Trends in Financial Sextortion", org: "Thorn and NCMEC", date: "2024-06-24", type: "Research report",
+    topics: ["Sextortion"], platforms: ["instagram", "snapchat", "meta"],
+    summary: "An analysis of sextortion reports made to the National Center for Missing & Exploited Children from 2020 to 2023.",
+    findings: ["About 90% of victims in the reports were boys aged 14 to 17.",
+               "Instagram was the platform of first contact in 45% of reports that named one; Snapchat in 32%.",
+               "Snapchat was the most common place for the follow-up private chat."],
+    url: "https://www.thorn.org/research/library/financial-sextortion/" },
+  { title: "Social AI Companions risk assessment", org: "Common Sense Media", date: "2025-04-30", type: "Risk assessment",
+    topics: ["AI chatbots"], platforms: ["ai"],
+    summary: "Testing of companion chatbot apps, including Character.AI, with teen accounts.",
+    findings: ["Rated social AI companions an 'unacceptable risk' and recommended no one under 18 use them.",
+               "Testers easily reached sexual content, even with teen safeguards on.",
+               "Companions gave dangerous information, such as how to get drugs or weapons."],
+    url: "https://institute.commonsensemedia.org/risk-assessments/social-ai-companions" },
+  { title: "Meta AI risk assessment", org: "Common Sense Media", date: "2025-08-28", type: "Risk assessment",
+    topics: ["AI chatbots"], platforms: ["ai", "meta", "instagram"],
+    summary: "Testing of the Meta AI assistant built into Instagram, Facebook and WhatsApp.",
+    findings: ["Safety systems regularly failed when teen test accounts were in crisis, missing clear signs of self-harm and suicide risk.",
+               "Recommended that no one under 18 use Meta AI."],
+    url: "https://www.commonsensemedia.org/press-releases/meta-ai-companions-unsafe-for-kids-common-sense-media-report-finds" },
+  { title: "Kids Online Safety Act (In Focus report)", org: "Congressional Research Service", date: "2026-08-24", type: "Policy analysis",
+    topics: ["Legislation"], platforms: [],
+    summary: "Nonpartisan explainer for Congress on the Kids Online Safety Act and the competing House and Senate versions.",
+    findings: ["Explains KOSA's proposed 'duty of care' and how the House KIDS Act differs.",
+               "Tracks where the bills stand in the 119th Congress."],
+    url: "https://www.congress.gov/crs-product/IF12730" }
+];
+
+// ---------- ORGANIZATION SIGN-UP ----------
+// Paste your Google Form's share link here (from Send > link icon). Leave "" until it's ready.
+export const ORG_FORM_URL = "";

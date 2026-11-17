@@ -1,0 +1,14 @@
+{
+  "name": "talk-about-tech-hub",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.9.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.163.0"
+  }
+}

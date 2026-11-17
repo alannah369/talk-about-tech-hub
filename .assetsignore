@@ -1,0 +1,10 @@
+# Files that are part of the server, not the public website
+worker.js
+wrangler.jsonc
+package.json
+package-lock.json
+node_modules
+.git
+.gitignore
+.assetsignore
+.wrangler

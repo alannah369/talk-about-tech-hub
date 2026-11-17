@@ -1,0 +1,23 @@
+{
+  // Cloudflare Worker settings for the Talk About Tech Resource Hub.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "talk-about-tech-hub",
+  "main": "worker.js",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // The website files. Files listed in .assetsignore are not published.
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  // Limit chat questions to 6 per minute per visitor (protects your API bill).
+  "ratelimits": [
+    {
+      "name": "CHAT_LIMIT",
+      "namespace_id": "1001",
+      "simple": { "limit": 6, "period": 60 }
+    }
+  ],
+  "workers_dev": true,
+  "observability": { "enabled": true }
+}
